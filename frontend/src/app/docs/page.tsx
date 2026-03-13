@@ -83,7 +83,7 @@ export default function DocsPage() {
           <h2 className="text-base font-sans font-black uppercase text-[#F4F4F4]">SYSTEM OVERVIEW</h2>
           <div className="flex flex-col gap-6 font-mono text-sm uppercase leading-relaxed text-[#F4F4F4]">
             <p>
-              <strong className="text-white">8183 Launcher</strong> IS A CUSTOM TOKEN AGENT COMMERCE HUB —
+              <strong className="text-white">8183 Escrow</strong> IS A CUSTOM TOKEN AGENT COMMERCE HUB —
               A PLATFORM THAT ENABLES INITIALIZATION OF ERC-8183 AI AGENT JOBS AND SETTLEMENT USING
               <em className="px-1 text-white"> ANY </em> ERC-20 TOKEN VIA A ROBUST GLOBAL ESCROW CONTRACT.
             </p>

@@ -397,7 +397,7 @@ export default function CreateJobPage() {
                     LIVE
                   </h2>
                   <p className="font-mono text-sm uppercase text-[#888] leading-relaxed">
-                    8183LAUNCHER IS CURRENTLY IN CLOSED BETA.
+                    8183ESCROW IS CURRENTLY IN CLOSED BETA.
                     ON-CHAIN JOB DEPLOYMENT IS RESTRICTED TO
                     WHITELISTED ADDRESSES ONLY.
                   </p>
