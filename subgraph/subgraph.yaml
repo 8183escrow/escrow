@@ -1,0 +1,57 @@
+# ──────────────────────────────────────────────────────────────────
+# 8183Escrow — Subgraph Manifest
+# Base chain (chainId: 8453)
+#
+# Data flow:
+# 1. GlobalEscrow data source listens for all events directly.
+#
+# NOTE: Replace GLOBAL_ESCROW_ADDRESS and startBlock before deployment.
+# ──────────────────────────────────────────────────────────────────
+
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+
+dataSources:
+  - kind: ethereum
+    name: GlobalEscrow
+    network: base
+    source:
+      address: "0x0000000000000000000000000000000000000000" # ← Replace with deployed GlobalEscrow address
+      abi: ERC8183Escrow
+      startBlock: 0 # ← Replace with deployment block
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Job
+        - UserStats
+        - GlobalStats
+      abis:
+        - name: ERC8183Escrow
+          file: ./abis/ERC8183Escrow.json
+      eventHandlers:
+        - event: JobCreated(indexed uint256,indexed address,address,address,address,uint256)
+          handler: handleJobCreated
+        - event: ProviderSet(indexed uint256,indexed address)
+          handler: handleProviderSet
+        - event: BudgetSet(indexed uint256,uint256)
+          handler: handleBudgetSet
+        - event: JobFunded(indexed uint256,indexed address,uint256)
+          handler: handleJobFunded
+        - event: JobSubmitted(indexed uint256,indexed address,bytes32)
+          handler: handleJobSubmitted
+        - event: JobCompleted(indexed uint256,indexed address,bytes32)
+          handler: handleJobCompleted
+        - event: JobRejected(indexed uint256,indexed address,bytes32)
+          handler: handleJobRejected
+        - event: JobExpired(indexed uint256)
+          handler: handleJobExpired
+        - event: PaymentReleased(indexed uint256,indexed address,uint256)
+          handler: handlePaymentReleased
+        - event: Refunded(indexed uint256,indexed address,uint256)
+          handler: handleRefunded
+      file: ./src/escrow.ts

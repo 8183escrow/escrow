@@ -1,0 +1,91 @@
+[
+  {
+    "type": "event",
+    "name": "JobCreated",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"},
+      {"indexed": true, "name": "client", "type": "address"},
+      {"indexed": false, "name": "provider", "type": "address"},
+      {"indexed": false, "name": "evaluator", "type": "address"},
+      {"indexed": false, "name": "paymentToken", "type": "address"},
+      {"indexed": false, "name": "expiredAt", "type": "uint256"}
+    ]
+  },
+  {
+    "type": "event",
+    "name": "ProviderSet",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"},
+      {"indexed": true, "name": "provider", "type": "address"}
+    ]
+  },
+  {
+    "type": "event",
+    "name": "BudgetSet",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"},
+      {"indexed": false, "name": "amount", "type": "uint256"}
+    ]
+  },
+  {
+    "type": "event",
+    "name": "JobFunded",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"},
+      {"indexed": true, "name": "client", "type": "address"},
+      {"indexed": false, "name": "amount", "type": "uint256"}
+    ]
+  },
+  {
+    "type": "event",
+    "name": "JobSubmitted",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"},
+      {"indexed": true, "name": "provider", "type": "address"},
+      {"indexed": false, "name": "deliverable", "type": "bytes32"}
+    ]
+  },
+  {
+    "type": "event",
+    "name": "JobCompleted",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"},
+      {"indexed": true, "name": "evaluator", "type": "address"},
+      {"indexed": false, "name": "reason", "type": "bytes32"}
+    ]
+  },
+  {
+    "type": "event",
+    "name": "JobRejected",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"},
+      {"indexed": true, "name": "rejector", "type": "address"},
+      {"indexed": false, "name": "reason", "type": "bytes32"}
+    ]
+  },
+  {
+    "type": "event",
+    "name": "JobExpired",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"}
+    ]
+  },
+  {
+    "type": "event",
+    "name": "PaymentReleased",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"},
+      {"indexed": true, "name": "provider", "type": "address"},
+      {"indexed": false, "name": "amount", "type": "uint256"}
+    ]
+  },
+  {
+    "type": "event",
+    "name": "Refunded",
+    "inputs": [
+      {"indexed": true, "name": "jobId", "type": "uint256"},
+      {"indexed": true, "name": "client", "type": "address"},
+      {"indexed": false, "name": "amount", "type": "uint256"}
+    ]
+  }
+]

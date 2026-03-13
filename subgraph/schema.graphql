@@ -1,0 +1,84 @@
+# ──────────────────────────────────────────────────────────────────
+# 8183Escrow — The Graph Subgraph Schema
+# Indexes: GlobalEscrow (all job events)
+# Provides the unified "My Jobs" dashboard.
+# ──────────────────────────────────────────────────────────────────
+
+"""
+Global platform stats.
+"""
+type GlobalStats @entity {
+  "Singleton ID 'latest'"
+  id: ID!
+  "Total jobs created"
+  totalJobsCreated: BigInt!
+  "Total jobs completed"
+  totalJobsCompleted: BigInt!
+}
+
+"""
+A single job within the Global Escrow.
+"""
+type Job @entity {
+  "Globally unique stringified jobId"
+  id: ID!
+  "On-chain job ID"
+  jobId: BigInt!
+  "Client address"
+  client: Bytes!
+  "Provider address"
+  provider: Bytes!
+  "Evaluator address"
+  evaluator: Bytes!
+  "Hook contract address"
+  hook: Bytes!
+  "Payment token address"
+  paymentToken: Bytes!
+  "Budget in payment token units"
+  budget: BigInt!
+  "Expiry timestamp"
+  expiredAt: BigInt!
+  "Job description"
+  description: String!
+  "Provider deliverable hash"
+  deliverable: Bytes
+  "Current status: Open, Funded, Submitted, Completed, Rejected, Expired"
+  status: String!
+  "Block when created"
+  createdAtBlock: BigInt!
+  "Timestamp when created"
+  createdAtTimestamp: BigInt!
+  "Transaction hash of creation"
+  createdTxHash: Bytes!
+  "Block when last updated"
+  updatedAtBlock: BigInt!
+  "Timestamp when last updated"
+  updatedAtTimestamp: BigInt!
+  "Completion reason / attestation hash"
+  completionReason: Bytes
+  "Rejection reason hash"
+  rejectionReason: Bytes
+  "Amount paid to provider"
+  payoutAmount: BigInt
+}
+
+"""
+Aggregated stats per user address (client, provider, or evaluator).
+Used for ERC-8004 reputation badges and dashboard summaries.
+"""
+type UserStats @entity {
+  "User wallet address (lowercase hex)"
+  id: ID!
+  "Total jobs created as client"
+  totalJobsCreated: BigInt!
+  "Total jobs funded as client"
+  totalJobsFunded: BigInt!
+  "Total jobs completed as provider"
+  totalJobsCompleted: BigInt!
+  "Total jobs rejected (as any role)"
+  totalJobsRejected: BigInt!
+  "Total earnings as provider (sum of payouts)"
+  totalEarnings: BigInt!
+  "Total spent as client (sum of budgets funded)"
+  totalSpent: BigInt!
+}
