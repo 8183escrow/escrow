@@ -106,29 +106,40 @@ export default function DocsPage() {
             </p>
           </div>
 
-          {/* CA + BUY SECTION — hidden until relaunch on bankr */}
-          {/* <div className="border border-[#F4F4F4] bg-white/5">
+          <div className="border border-[#F4F4F4] bg-white/5">
             <div className="flex items-center justify-between border-b border-[#333] px-6 py-4">
               <span className="font-mono text-[10px] uppercase font-bold text-[#555]">[ LIVE_TOKEN_ROUTING ]</span>
               <span className="font-mono text-[10px] uppercase text-[#F4F4F4]">BASE_MAINNET</span>
             </div>
             <div className="flex flex-col gap-6 px-6 py-6">
               <div className="flex flex-col gap-2">
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#888]">Contract Address</p>
-                <p className="font-mono text-sm uppercase break-all leading-relaxed text-[#F4F4F4]">{LAUNCH_CONFIG.contractAddress}</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#888]">
+                  Contract Address
+                </p>
+                <p className="font-mono text-sm uppercase break-all leading-relaxed text-[#F4F4F4]">
+                  {LAUNCH_CONFIG.contractAddress}
+                </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
-                <a href={LAUNCH_CONFIG.buyUrl} target="_blank" rel="noopener noreferrer"
-                  className="font-mono font-bold text-xs uppercase border border-[#F4F4F4] bg-[#F4F4F4] text-[#030303] px-6 py-3 hover:bg-transparent hover:text-[#F4F4F4] transition-colors whitespace-nowrap text-center">
+                <a
+                  href={LAUNCH_CONFIG.buyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono font-bold text-xs uppercase border border-[#F4F4F4] bg-[#F4F4F4] text-[#030303] px-6 py-3 hover:bg-transparent hover:text-[#F4F4F4] transition-colors whitespace-nowrap text-center"
+                >
                   [ BUY_ON_BANKR ]
                 </a>
-                <a href={`https://basescan.org/address/${LAUNCH_CONFIG.contractAddress}`} target="_blank" rel="noopener noreferrer"
-                  className="font-mono font-bold text-xs uppercase border border-[#333] text-[#888] px-6 py-3 hover:border-[#F4F4F4] hover:text-[#F4F4F4] transition-colors whitespace-nowrap text-center">
+                <a
+                  href={`https://basescan.org/address/${LAUNCH_CONFIG.contractAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono font-bold text-xs uppercase border border-[#333] text-[#888] px-6 py-3 hover:border-[#F4F4F4] hover:text-[#F4F4F4] transition-colors whitespace-nowrap text-center"
+                >
                   [ VIEW_ON_BASESCAN ]
                 </a>
               </div>
             </div>
-          </div> */}
+          </div>
 
           {/* Agent Skills Block */}
           <div className="border border-[#F4F4F4] bg-[#030303] w-full mt-4">
@@ -329,21 +340,23 @@ uint256 providerPayout = budget - fee;`}
           </div>
 
           <div className="flex flex-wrap gap-6 font-mono text-sm font-bold uppercase">
-            {/* CA + BUY hidden until relaunch on bankr */}
-            {/* <div className="border border-[#555] px-6 py-4 bg-white/5">
+            <div className="border border-[#555] px-6 py-4 bg-white/5">
               CA: <span className="text-[#00FF00] break-all">{LAUNCH_CONFIG.contractAddress}</span>
-            </div> */}
+            </div>
             <div className="border border-[#555] px-6 py-4 bg-white/5">
               SUPPLY: <span className="text-[#00FF00]">TBA</span>
             </div>
             <div className="border border-[#F4F4F4] px-6 py-4 text-[#030303] bg-[#F4F4F4]">
               CHAIN: <span className="text-[#030303]">BASE_MAINNET</span>
             </div>
-            {/* BUY hidden until relaunch on bankr */}
-            {/* <a href={LAUNCH_CONFIG.buyUrl} target="_blank" rel="noopener noreferrer"
-              className="border border-[#F4F4F4] px-6 py-4 text-[#030303] bg-[#F4F4F4] hover:bg-transparent hover:text-[#F4F4F4] transition-colors">
+            <a
+              href={LAUNCH_CONFIG.buyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-[#F4F4F4] px-6 py-4 text-[#030303] bg-[#F4F4F4] hover:bg-transparent hover:text-[#F4F4F4] transition-colors"
+            >
               BUY: <span>BANKR</span>
-            </a> */}
+            </a>
           </div>
 
           <div className="font-mono text-sm uppercase leading-relaxed text-[#F4F4F4] flex flex-col gap-6">

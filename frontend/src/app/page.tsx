@@ -41,25 +41,34 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 flex w-full max-w-3xl flex-col items-center gap-4">
-          {/* CA + BUY SECTION — hidden until relaunch on bankr */}
-          {/* <div className="w-full border border-white/20 bg-black/30 backdrop-blur-[2px]">
+          <div className="w-full border border-white/20 bg-black/30 backdrop-blur-[2px]">
             <div className="flex items-center justify-between border-b border-white/20 px-4 py-3 font-mono text-[10px] uppercase text-[#888] md:px-5">
               <span>Launch Routing</span>
               <span className="text-[#F4F4F4]">[ LIVE_ON_BASE ]</span>
             </div>
+
             <div className="grid gap-0 md:grid-cols-[minmax(0,1fr)_220px]">
               <div className="border-b border-white/20 px-4 py-4 md:border-b-0 md:border-r md:px-5">
-                <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[#888]">Contract Address</p>
-                <p className="break-all font-mono text-xs uppercase leading-relaxed text-[#F4F4F4] md:text-sm">{LAUNCH_CONFIG.contractAddress}</p>
+                <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[#888]">
+                  Contract Address
+                </p>
+                <p className="break-all font-mono text-xs uppercase leading-relaxed text-[#F4F4F4] md:text-sm">
+                  {LAUNCH_CONFIG.contractAddress}
+                </p>
               </div>
+
               <div className="flex items-stretch">
-                <a href={LAUNCH_CONFIG.buyUrl} target="_blank" rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center whitespace-nowrap bg-[#F4F4F4] px-5 py-5 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-[#030303] transition-colors hover:bg-transparent hover:text-[#F4F4F4] md:text-xs">
+                <a
+                  href={LAUNCH_CONFIG.buyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center whitespace-nowrap bg-[#F4F4F4] px-5 py-5 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-[#030303] transition-colors hover:bg-transparent hover:text-[#F4F4F4] md:text-xs"
+                >
                   [ Buy On Bankr ]
                 </a>
               </div>
             </div>
-          </div> */}
+          </div>
 
           <div className="font-mono text-[10px] md:text-xs uppercase text-[#F4F4F4] text-center leading-relaxed max-w-lg border-t border-white/20 pt-4">
             <p>DECENTRALIZED COMMERCE INFRASTRUCTURE.</p>
