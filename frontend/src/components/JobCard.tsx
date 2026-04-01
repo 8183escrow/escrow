@@ -2,46 +2,22 @@
 
 import Link from "next/link";
 import { StatusBadge } from "./StatusBadge";
-import { formatUnits } from "viem";
-import { useReadContract } from "wagmi";
-import { ERC20_ABI } from "@/lib/contracts";
-import type { SubgraphJob } from "@/lib/graphql";
+import {
+  formatTokenAmount,
+  timeAgo,
+  truncateSolanaAddress,
+  type DemoJob,
+} from "@/lib/demoJobs";
 
 interface JobCardProps {
-  job: SubgraphJob;
+  job: DemoJob;
 }
 
 export function JobCard({ job }: JobCardProps) {
-  const { data: symbol } = useReadContract({
-    address: job.paymentToken as `0x${string}`,
-    abi: ERC20_ABI,
-    functionName: "symbol",
-  });
-
-  const { data: decimals } = useReadContract({
-    address: job.paymentToken as `0x${string}`,
-    abi: ERC20_ABI,
-    functionName: "decimals",
-  });
-
-  const formattedBudget = decimals
-    ? formatUnits(BigInt(job.budget), decimals)
-    : job.budget;
-
+  const formattedBudget = formatTokenAmount(job.budget, job.tokenDecimals);
   const isExpired =
-    Date.now() / 1000 > Number(job.expiredAt) &&
+    new Date(job.expiresAt).getTime() < Date.now() &&
     !["Completed", "Rejected", "Expired"].includes(job.status);
-
-  const truncateAddr = (addr: string) =>
-    `${addr.slice(0, 6)}...${addr.slice(-4)}`;
-
-  const timeAgo = (timestamp: string) => {
-    const diff = Date.now() / 1000 - Number(timestamp);
-    if (diff < 60) return "just now";
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
-  };
 
   return (
     <Link href={`/job/${job.id}`}>
@@ -66,10 +42,10 @@ export function JobCard({ job }: JobCardProps) {
           </div>
           <div className="text-left md:text-right flex-shrink-0 font-mono">
             <p className="text-xl font-bold text-[#F4F4F4] uppercase">
-              {formattedBudget} {symbol || "TKN"}
+              {formattedBudget} {job.tokenSymbol}
             </p>
             <p className="text-xs text-[#888] uppercase mt-1">
-              ESCROW_ALLOCATION
+              BETA_PAYOUT_PREVIEW
             </p>
           </div>
         </div>
@@ -79,19 +55,19 @@ export function JobCard({ job }: JobCardProps) {
             <span>
               CLI: {" "}
               <span className="text-[#F4F4F4]">
-                {truncateAddr(job.client)}
+                {truncateSolanaAddress(job.clientWallet, 6, 4)}
               </span>
             </span>
             <span>
               PRV: {" "}
               <span className="text-[#F4F4F4]">
-                {job.provider === "0x0000000000000000000000000000000000000000"
+                {!job.providerWallet
                   ? "UNASSIGNED"
-                  : truncateAddr(job.provider)}
+                  : truncateSolanaAddress(job.providerWallet, 6, 4)}
               </span>
             </span>
           </div>
-          <span>T-{timeAgo(job.createdAtTimestamp)}</span>
+          <span>T-{timeAgo(job.createdAt)}</span>
         </div>
       </div>
     </Link>

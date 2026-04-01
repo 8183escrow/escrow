@@ -1,42 +1,57 @@
 "use client";
 
 import Link from "next/link";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import {
+  BRAND_MARK,
+  NETWORK_META_LABEL,
+  truncateSolanaAddress,
+} from "@/lib/demoJobs";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home" },
-  { href: "/create-job", label: "Jobs" },
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "/create-job", label: "Intake" },
+  { href: "/dashboard", label: "Registry" },
   { href: "/docs", label: "Docs" },
 ];
 
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { connected, publicKey, disconnect, wallet } = useWallet();
+  const { setVisible } = useWalletModal();
+
+  const walletLabel = publicKey
+    ? truncateSolanaAddress(publicKey.toBase58(), 6, 6)
+    : "CONNECT";
+
+  const handleConnect = () => setVisible(true);
+  const handleDisconnect = () => {
+    void disconnect();
+  };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#030303] text-[#F4F4F4] shadow-none border-b border-[#F4F4F4] tracking-tight">
-      <div className="w-full px-5 sm:px-8 bg-[#030303] relative z-20">
-        <div className="flex items-center justify-between h-[72px]">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-            <span className="font-sans font-black text-xl uppercase tracking-tighter">
-              ERC-8183 // ESCROW
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-[#F4F4F4] bg-[#030303] text-[#F4F4F4] tracking-tight">
+      <div className="relative z-20 w-full bg-[#030303] px-5 sm:px-8">
+        <div className="flex h-[72px] items-center justify-between">
+          <Link href="/" className="group flex shrink-0 items-center gap-2.5">
+            <span className="font-sans text-lg font-black uppercase tracking-[-0.08em] sm:text-xl">
+              {BRAND_MARK}
             </span>
           </Link>
 
-          {/* Navigation Desktop */}
-          <nav className="hidden lg:flex items-center gap-8 font-mono text-xs font-bold uppercase">
+          <nav className="hidden items-center gap-8 font-mono text-xs font-bold uppercase lg:flex">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`transition-colors duration-0 ${
+                className={`px-2 py-1 transition-colors duration-0 ${
                   pathname === item.href
-                    ? "bg-[#F4F4F4] text-[#030303] px-2 py-1"
-                    : "hover:bg-white/10 px-2 py-1"
+                    ? "bg-[#F4F4F4] text-[#030303]"
+                    : "hover:bg-white/10"
                 }`}
               >
                 {item.label}
@@ -44,126 +59,91 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Action Row */}
-          <div className="flex items-center gap-4">
-            {/* Wallet */}
-            <ConnectButton.Custom>
-              {({
-                account,
-                chain,
-                openAccountModal,
-                openChainModal,
-                openConnectModal,
-                authenticationStatus,
-                mounted,
-              }) => {
-                const ready = mounted && authenticationStatus !== "loading";
-                const connected =
-                  ready &&
-                  account &&
-                  chain &&
-                  (!authenticationStatus ||
-                    authenticationStatus === "authenticated");
+          <div className="flex items-center gap-3">
+            <div className="hidden border border-[#333] px-3 py-2 font-mono text-[10px] font-bold uppercase text-[#888] md:flex">
+              {NETWORK_META_LABEL}
+            </div>
 
-                return (
-                  <div
-                    {...(!ready && {
-                      "aria-hidden": true,
-                      style: {
-                        opacity: 0,
-                        pointerEvents: "none",
-                        userSelect: "none",
-                      },
-                    })}
-                  >
-                    {(() => {
-                      if (!connected) {
-                        return (
-                          <button
-                            onClick={openConnectModal}
-                            type="button"
-                            className="font-mono text-xs font-bold uppercase border border-[#F4F4F4] px-4 py-2 hover:bg-[#F4F4F4] hover:text-[#030303] transition-none"
-                          >
-                            [ CONNECT ]
-                          </button>
-                        );
-                      }
+            {!connected ? (
+              <button
+                onClick={handleConnect}
+                type="button"
+                className="border border-[#F4F4F4] px-4 py-2 font-mono text-xs font-bold uppercase transition-none hover:bg-[#F4F4F4] hover:text-[#030303]"
+              >
+                [ CONNECT SOLANA ]
+              </button>
+            ) : (
+              <div className="hidden gap-2 md:flex">
+                <button
+                  onClick={handleConnect}
+                  type="button"
+                  className="flex items-center gap-2 border border-[#F4F4F4] px-3 py-2 font-mono text-xs font-bold uppercase transition-none hover:bg-[#F4F4F4] hover:text-[#030303]"
+                >
+                  <span className="h-2 w-2 rounded-full bg-[#14F195] !rounded-full" />
+                  {wallet?.adapter.name ?? "Solana Wallet"}
+                  <span className="text-[#888]">{walletLabel}</span>
+                </button>
+                <button
+                  onClick={handleDisconnect}
+                  type="button"
+                  className="border border-[#333] px-3 py-2 font-mono text-xs font-bold uppercase text-[#888] transition-none hover:border-[#F4F4F4] hover:text-[#F4F4F4]"
+                >
+                  [ DISCONNECT ]
+                </button>
+              </div>
+            )}
 
-                      if (chain.unsupported) {
-                        return (
-                          <button
-                            onClick={openChainModal}
-                            type="button"
-                            className="font-mono text-[10px] md:text-xs font-bold uppercase border border-[#FF0033] text-[#FF0033] px-2 md:px-4 py-2 hover:bg-[#FF0033] hover:text-[#030303] transition-none"
-                          >
-                            [ BAD NETWORK ]
-                          </button>
-                        );
-                      }
-
-                      return (
-                        <div className="flex gap-2">
-                          <button
-                            onClick={openChainModal}
-                            type="button"
-                            className="hidden md:flex font-mono text-xs font-bold uppercase border border-[#F4F4F4] px-3 py-2 hover:bg-[#F4F4F4] hover:text-[#030303] transition-none items-center"
-                          >
-                            {chain.hasIcon && (
-                              <div
-                                style={{
-                                  background: chain.iconBackground,
-                                }}
-                                className="w-4 h-4 overflow-hidden mr-2"
-                              >
-                                {chain.iconUrl && (
-                                  <img
-                                    alt={chain.name ?? "Chain icon"}
-                                    src={chain.iconUrl}
-                                    className="w-4 h-4 grayscale"
-                                  />
-                                )}
-                              </div>
-                            )}
-                            {chain.name}
-                          </button>
-
-                          <button
-                            onClick={openAccountModal}
-                            type="button"
-                            className="font-mono text-[10px] md:text-xs font-bold uppercase border border-[#F4F4F4] px-3 md:px-4 py-2 hover:bg-[#F4F4F4] hover:text-[#030303] transition-none flex items-center gap-2"
-                          >
-                            {account.displayName}
-                          </button>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                );
-              }}
-            </ConnectButton.Custom>
-
-            {/* Mobile Hamburger Menu */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden flex flex-col justify-center items-center w-[30px] h-[30px] border border-[#F4F4F4] bg-[#030303]"
+              className="flex h-[30px] w-[30px] flex-col items-center justify-center border border-[#F4F4F4] bg-[#030303] lg:hidden"
             >
-              <span className={`block h-[2px] w-[14px] bg-[#F4F4F4] transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'rotate-45 translate-y-[3px]' : '-translate-y-[3px]'}`} />
-              <span className={`block h-[2px] w-[14px] bg-[#F4F4F4] transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-              <span className={`block h-[2px] w-[14px] bg-[#F4F4F4] transition-all duration-300 ease-in-out ${isMobileMenuOpen ? '-rotate-45 -translate-y-[5px]' : 'translate-y-[3px]'}`} />
+              <span
+                className={`block h-[2px] w-[14px] bg-[#F4F4F4] transition-all duration-300 ease-in-out ${
+                  isMobileMenuOpen ? "translate-y-[3px] rotate-45" : "-translate-y-[3px]"
+                }`}
+              />
+              <span
+                className={`block h-[2px] w-[14px] bg-[#F4F4F4] transition-all duration-300 ease-in-out ${
+                  isMobileMenuOpen ? "opacity-0" : "opacity-100"
+                }`}
+              />
+              <span
+                className={`block h-[2px] w-[14px] bg-[#F4F4F4] transition-all duration-300 ease-in-out ${
+                  isMobileMenuOpen
+                    ? "-translate-y-[5px] -rotate-45"
+                    : "translate-y-[3px]"
+                }`}
+              />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation Dropdown */}
-      <div className={`lg:hidden absolute top-[72px] left-0 w-full bg-[#030303] border-b border-[#F4F4F4] transition-all duration-300 ease-in-out origin-top ${isMobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 pointer-events-none'}`}>
+      <div
+        className={`absolute top-[72px] left-0 w-full origin-top border-b border-[#F4F4F4] bg-[#030303] transition-all duration-300 ease-in-out lg:hidden ${
+          isMobileMenuOpen
+            ? "scale-y-100 opacity-100"
+            : "pointer-events-none scale-y-0 opacity-0"
+        }`}
+      >
+        <div className="border-b border-[#333] px-8 py-4 font-mono text-[10px] uppercase text-[#888]">
+          <div className="flex items-center justify-between">
+            <span>Wallet</span>
+            <span>{connected ? walletLabel : "Not Connected"}</span>
+          </div>
+          <div className="mt-2 flex items-center justify-between">
+            <span>Network</span>
+            <span>{NETWORK_META_LABEL}</span>
+          </div>
+        </div>
+
         <nav className="flex flex-col font-mono text-sm font-bold uppercase">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`px-8 py-5 border-t border-[#333] transition-colors duration-0 ${
+              className={`border-t border-[#333] px-8 py-5 transition-colors duration-0 ${
                 pathname === item.href
                   ? "bg-[#F4F4F4] text-[#030303]"
                   : "hover:bg-white/10"
@@ -173,6 +153,44 @@ export function Header() {
             </Link>
           ))}
         </nav>
+
+        <div className="flex gap-3 px-8 py-5">
+          {!connected ? (
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                handleConnect();
+              }}
+              className="w-full border border-[#F4F4F4] px-4 py-3 font-mono text-xs font-bold uppercase transition-none hover:bg-[#F4F4F4] hover:text-[#030303]"
+            >
+              [ CONNECT ]
+            </button>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  handleConnect();
+                }}
+                className="w-full border border-[#F4F4F4] px-4 py-3 font-mono text-xs font-bold uppercase transition-none hover:bg-[#F4F4F4] hover:text-[#030303]"
+              >
+                [ SWITCH WALLET ]
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  handleDisconnect();
+                }}
+                className="w-full border border-[#333] px-4 py-3 font-mono text-xs font-bold uppercase text-[#888] transition-none hover:border-[#F4F4F4] hover:text-[#F4F4F4]"
+              >
+                [ DISCONNECT ]
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

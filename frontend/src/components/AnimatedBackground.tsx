@@ -64,10 +64,10 @@ export function AnimatedBackground() {
             // Adjust aspect ratio so scratches don't stretch
             uv.x *= u_resolution.x / u_resolution.y;
 
-            // Base color (deep black/dark gray)
+            // Backdrop color (deep black/dark gray)
             vec3 color = vec3(0.02, 0.02, 0.02);
 
-            // Add base grain/noise
+            // Add grain/noise
             float grain = random(uv + u_time * 0.0001) * 0.08;
             color += vec3(grain);
 
@@ -99,7 +99,7 @@ export function AnimatedBackground() {
             // Combine scratches
             float totalScratches = max(max(s1, s2), s3) + fineScratches;
             
-            // Add scratches to base color (white scratches on dark)
+            // Add scratches to backdrop color (white scratches on dark)
             color += vec3(totalScratches);
 
             gl_FragColor = vec4(color, 1.0);

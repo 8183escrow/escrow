@@ -1,9 +1,11 @@
-# 8183Escrow
+# Solana Agent Escrow
 
-Custom Token Agent Commerce Hub for ERC-8183 jobs on Base. This repo contains:
+Solana-first escrow UX for AI agent workflows. The public web surface is a read-only beta: it connects to Solana Mainnet wallets, presents job and docs views, and keeps the existing backend packages out of the marketing layer.
 
-- a Solidity escrow implementation for AI-agent style work orders
-- a Next.js frontend for creating and tracking jobs
+This repo contains:
+
+- a contract package for the current escrow implementation
+- a Next.js frontend for the public Solana-first experience
 - a Graph subgraph for indexing escrow activity
 
 For hosted web deployments, the application entrypoint lives in `frontend/`.
@@ -14,13 +16,13 @@ For hosted web deployments, the application entrypoint lives in `frontend/`.
 User Wallet
    |
    v
-Frontend (Next.js + wagmi)
+Frontend (Next.js + Solana wallet adapter)
    |
    v
-ERC8183Escrow (Base)
+Existing backend packages
    |
    +--> optional hook callbacks
-   +--> ERC-20 payment token transfers
+   +--> payment token transfers
    +--> evaluator-driven completion / rejection
    |
    v
@@ -30,50 +32,15 @@ Subgraph (The Graph)
 ## Repository Layout
 
 ```text
-8183Escrow/
-├── contracts/
-│   ├── src/
-│   │   ├── ERC8183Escrow.sol
-│   │   ├── interfaces/
-│   │   │   ├── IACPHook.sol
-│   │   │   ├── IERC8183.sol
-│   │   │   └── IReputationRegistry.sol
-│   │   └── mocks/
-│   ├── test/
-│   │   └── ERC8183Escrow.test.js
-│   ├── hardhat.config.js
-│   └── package.json
-├── frontend/
-│   ├── src/app/
-│   │   ├── page.tsx
-│   │   ├── create-job/page.tsx
-│   │   ├── dashboard/page.tsx
-│   │   ├── docs/page.tsx
-│   │   └── job/[id]/page.tsx
-│   ├── src/components/
-│   ├── src/hooks/
-│   ├── src/lib/
-│   └── package.json
-├── subgraph/
-│   ├── abis/ERC8183Escrow.json
-│   ├── schema.graphql
-│   ├── src/escrow.ts
-│   └── subgraph.yaml
-└── README.md
+contracts/
+frontend/
+subgraph/
+README.md
 ```
 
 ## Smart Contract
 
-The contract entrypoint is `contracts/src/ERC8183Escrow.sol`.
-
-Main properties:
-
-- ERC-8183 style job lifecycle
-- single ERC-20 payment token per deployed escrow
-- optional hook support through `IACPHook`
-- configurable treasury + fee basis points
-- optional ERC-8004 reputation integration
-- refund path preserved outside hooks
+The contract package remains in the repository and continues to power the existing backend implementation. The current frontend rebrand does not change that package.
 
 Local contract workflow:
 
@@ -88,30 +55,21 @@ This repo currently includes the escrow contract and tests, but does not include
 
 ## Frontend
 
-The app lives in `frontend/` and uses Next.js 15, React 19, wagmi, viem, and RainbowKit.
+The app lives in `frontend/` and is presented as a Solana-first, read-only beta. The wallet connect surface uses Solana Mainnet wallets, while live contract actions stay out of the public UI.
 
 Local frontend workflow:
 
 ```bash
 cd frontend
 npm install
-cat <<'EOF' > .env.local
-NEXT_PUBLIC_GLOBAL_ESCROW_ADDRESS=0x0000000000000000000000000000000000000000
-NEXT_PUBLIC_NATIVE_TOKEN_ADDRESS=0x0000000000000000000000000000000000000000
-NEXT_PUBLIC_SUBGRAPH_URL=https://api.studio.thegraph.com/query/YOUR_ID/8183escrow/version/latest
-EOF
 npm run dev
 ```
 
-Environment variables used by the frontend:
-
-- `NEXT_PUBLIC_GLOBAL_ESCROW_ADDRESS`
-- `NEXT_PUBLIC_NATIVE_TOKEN_ADDRESS`
-- `NEXT_PUBLIC_SUBGRAPH_URL`
+If you are working on the backend packages, use their own docs and configs. The public frontend beta does not surface those implementation details.
 
 ## Subgraph
 
-The Graph manifest is in `subgraph/subgraph.yaml` and currently expects a single deployed escrow contract as the data source.
+The Graph manifest is in `subgraph/subgraph.yaml` and belongs to the existing backend implementation.
 
 Before deploying the subgraph, update:
 
@@ -124,7 +82,7 @@ Typical flow:
 cd subgraph
 graph codegen
 graph build
-graph deploy --studio 8183escrow
+graph deploy --studio <your-subgraph-name>
 ```
 
 ## Hook Extension Example

@@ -64,16 +64,67 @@ html, body {
     background: var(--bg);
 }
 
-/* ═══════════════════════════ RainbowKit overrides ════════════════════════════ */
-[data-rk] {
-    --rk-colors-accentColor: var(--fg) !important;
-    --rk-colors-accentColorForeground: var(--bg) !important;
-    --rk-colors-modalBackground: var(--bg) !important;
-    --rk-colors-modalText: var(--fg) !important;
-    --rk-radii-modal: 0px !important;
-    --rk-radii-menuButton: 0px !important;
-    --rk-radii-connectButton: 0px !important;
-    --rk-shadows-connectButton: none !important;
+/* ═══════════════════════════ Solana Wallet Adapter overrides ════════════════════════════ */
+.wallet-adapter-button,
+.wallet-adapter-button-trigger {
+    background: transparent !important;
+    color: var(--fg) !important;
+    border: 1px solid var(--fg) !important;
+    border-radius: 0 !important;
+    font-family: var(--mono) !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.02em !important;
+    box-shadow: none !important;
+    transition: none !important;
+}
+
+.wallet-adapter-button:hover,
+.wallet-adapter-button-trigger:hover,
+.wallet-adapter-button:not([disabled]):hover {
+    background: var(--fg) !important;
+    color: var(--bg) !important;
+}
+
+.wallet-adapter-button[disabled] {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
+.wallet-adapter-modal-wrapper,
+.wallet-adapter-modal {
+    background: rgba(3, 3, 3, 0.98) !important;
+    color: var(--fg) !important;
+    border-radius: 0 !important;
+    border: 1px solid var(--fg) !important;
+    box-shadow: none !important;
+}
+
+.wallet-adapter-modal-wrapper .wallet-adapter-modal-button-close,
+.wallet-adapter-modal .wallet-adapter-modal-button-close {
+    background: transparent !important;
+    color: var(--fg) !important;
+    border: 1px solid rgba(244, 244, 244, 0.2) !important;
+    border-radius: 0 !important;
+}
+
+.wallet-adapter-modal-wrapper .wallet-adapter-modal-list,
+.wallet-adapter-modal .wallet-adapter-modal-list {
+    margin-top: 1rem !important;
+}
+
+.wallet-adapter-modal-wrapper .wallet-adapter-button,
+.wallet-adapter-modal .wallet-adapter-button {
+    width: 100% !important;
+    justify-content: space-between !important;
+    padding: 1rem !important;
+    margin: 0 !important;
+}
+
+.wallet-adapter-modal-wrapper .wallet-adapter-button:hover,
+.wallet-adapter-modal .wallet-adapter-button:hover {
+    background: var(--fg) !important;
+    color: var(--bg) !important;
 }
 
 /* ═══════════════════════════ Utility Classes for Redesign ════════════════════════════ */

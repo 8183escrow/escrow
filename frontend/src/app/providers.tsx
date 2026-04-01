@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
-import { WagmiProvider } from "wagmi";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { config } from "@/lib/wagmi";
-import "@rainbow-me/rainbowkit/styles.css";
-
-const queryClient = new QueryClient();
+import { useEffect, useMemo, useState } from "react";
+import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
+import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare";
+import "@solana/wallet-adapter-react-ui/styles.css";
+import { SOLANA_NETWORK, SOLANA_RPC_ENDPOINT } from "@/lib/solana";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
@@ -16,25 +15,23 @@ export function Providers({ children }: { children: React.ReactNode }) {
     setMounted(true);
   }, []);
 
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new SolflareWalletAdapter({ network: SOLANA_NETWORK }),
+    ],
+    [],
+  );
+
   if (!mounted) {
     return null;
   }
 
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={lightTheme({
-            accentColor: "#d1fae5",
-            accentColorForeground: "#0f172a",
-            borderRadius: "large",
-            fontStack: "system",
-            overlayBlur: "small",
-          })}
-        >
-          {children}
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <ConnectionProvider endpoint={SOLANA_RPC_ENDPOINT}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>{children}</WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
   );
 }

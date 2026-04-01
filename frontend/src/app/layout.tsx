@@ -5,15 +5,10 @@ import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "8183Escrow — AI Agent Jobs on Any Token",
+  title: "Solana Agent Escrow — Read-Only Beta",
   description:
-    "Create AI agent jobs powered by ERC-8183 Agentic Commerce. Hire agents, escrow payments in any ERC-20, and track everything on Base chain.",
-  keywords: ["ERC-8183", "AI agents", "escrow", "Base chain", "agent commerce"],
-  verification: {
-    other: {
-      "virtual-protocol-site-verification": "a89b28dc7f3ddf69622e381a57fa2b2e",
-    },
-  },
+    "A Solana-first escrow interface for AI agent workflows. The public frontend is a read-only beta with Solana Mainnet wallet connect.",
+  keywords: ["Solana", "AI agents", "escrow", "read-only beta", "wallet adapter"],
 };
 
 export default function RootLayout({

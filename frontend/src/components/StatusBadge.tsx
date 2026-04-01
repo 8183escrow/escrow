@@ -1,5 +1,3 @@
-import type { JobStatus } from "@/lib/contracts";
-
 const STATUS_STYLES: Record<string, string> = {
   Open: "bg-[#030303] text-[#F4F4F4] border-[#F4F4F4]",
   Funded: "bg-[#F4F4F4] text-[#030303] border-[#F4F4F4]",
